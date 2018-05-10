@@ -3,9 +3,14 @@ $(document).ready(function(){
     //create array with topics
     var topics= ["Boston Terrier", "Dalmation", "Golden Retriever", "French Poodle", "Great Dane", "Chihuahua", "Pug", "German Shepherd", "English Bull Dog", "Saint Bernard", "Rottweiler", "Beagle", "Dobermann", "Siberian Huskey"]
 
-    // create for loop to display buttons
-    for(var i=0; i<topics.length; i++){
-       $(".buttons").append(`<button type="button" class="breedButtons" data-name="${topics[i]}">${topics[i]}`)        
+    // Create function that displays the buttons
+    function showButtons(){
+        // create for loop to display buttons
+        $(".buttons").empty();
+
+        for(var i=0; i<topics.length; i++){
+        $(".buttons").append(`<button type="button" class="breedButtons" data-name="${topics[i]}">${topics[i]}`)        
+        }
     }
 
     // creating function to get the gifs when clicking on button    
@@ -32,8 +37,9 @@ $(document).ready(function(){
 
                 var breedImage= $("<img>");
                 
-                breedImage.attr("src", results[i].images.fixed_height.url)
-
+                breedImage.attr("src", results[i].images.fixed_height.url);
+                breedImage.attr("class", "clickableGif sizingGif");
+                breedDiv.attr("class", "sizingGif");
                 breedDiv.append(breedImage);
                 breedDiv.append(p);
                 $(".gifDisplay").prepend(breedDiv);
@@ -41,10 +47,19 @@ $(document).ready(function(){
         })
     }
 
-
-
+    showButtons();
+    
     $("body").on("click", ".breedButtons", pullGifs)
 
+    $("#addBreed").on("click", function(event){
+        event.preventDefault();
+        var userBreed = $("#userBreed").val().trim();
+        console.log(userBreed);
+        topics.push(userBreed);
+        console.log(topics)
+        showButtons();
+        $("#userBreed").val("");
+    })
 })
 
 
