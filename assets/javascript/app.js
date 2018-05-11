@@ -60,11 +60,15 @@ $(document).ready(function(){
     $("#addBreed").on("click", function(event){
         event.preventDefault();
         var userBreed = $("#userBreed").val().trim();
+        if (userBreed != ""){
         console.log(userBreed);
         topics.push(userBreed);
         console.log(topics)
         showButtons();
         $("#userBreed").val("");
+    }else{
+        return;
+    }
     })
 
     $(".gifDisplay").on("click", ".clickableGif", function(){
