@@ -19,7 +19,8 @@ $(document).ready(function(){
 
         var breed = $(this).attr("data-name");
         var apiKey = "noUBPJjYfo00Ox801Irpg8NqhNawzmLB";
-        var queryUrl = "https://api.giphy.com/v1/gifs/search?q=" + breed + "&api_key=" + apiKey + "&limit=10"
+        var queryUrl = "https://api.giphy.com/v1/gifs/search?q=" + breed + "&api_key=" + apiKey + "&limit=10&rating=PG-13"
+        
         //console.log(breed);
         $.ajax({
             url: queryUrl,
@@ -30,15 +31,20 @@ $(document).ready(function(){
             console.log(results);
 
             for(var i=0; i<results.length; i++){
+                var gifStill= results[i].images.fixed_height_still.url;
+                var gifAnimate= results[i].images.fixed_height.url;
 
-                var breedDiv= $("<div>");
+                var breedDiv= $("<div class= 'giphyClicks'>");
 
                 var p= $("<p>").text("Rating: " + results[i].rating);
 
                 var breedImage= $("<img>");
                 
-                breedImage.attr("src", results[i].images.fixed_height.url);
+                breedImage.attr("src", gifStill);
                 breedImage.attr("class", "clickableGif sizingGif");
+                breedImage.attr("data-state", "still");
+                breedImage.attr("data-still", gifStill);
+                breedImage.attr("data-animate", gifAnimate);
                 breedDiv.attr("class", "sizingGif");
                 breedDiv.append(breedImage);
                 breedDiv.append(p);
@@ -59,6 +65,20 @@ $(document).ready(function(){
         console.log(topics)
         showButtons();
         $("#userBreed").val("");
+    })
+
+    $(".gifDisplay").on("click", ".clickableGif", function(){
+        console.log(this);
+        var state = $(this).attr("data-state");
+
+        if(state === "still"){
+           $(this).attr("data-state", "animate");
+           $(this).attr("src", $(this).attr("data-animate"));
+        }else{
+            $(this).attr("data-state", "still");
+            $(this).attr("src", $(this).attr("data-still"));
+        }
+
     })
 })
 
